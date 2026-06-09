@@ -1,5 +1,21 @@
 # Task 3: Machine Learning - The "Baseline Beater"
 
+## The Solution: Beating the Baseline
+
+We overhauled the initial `baseline_model.ipynb` to dramatically improve performance. 
+
+**Our Results:**
+- **Baseline F1-Score:** 0.28283
+- **Optimized F1-Score:** 0.61871 (a **118.7% improvement!**)
+
+**The Three Key Changes:**
+1. **Most Impactful Change (Feature Engineering):** We engineered new features that reflect true human behavior instead of raw numbers. The most impactful change was creating a `Total_Campaigns_Accepted` feature.
+2. **Why it Worked Logically:** Human behavior is highly repetitive. If a customer accepted previous marketing campaigns, they are significantly more likely to accept the new one. The original model completely ignored this historical loyalty data. By aggregating past campaign acceptances into a single "loyalty score", we gave the model a powerful signal that immediately improved its ability to find the "Yes" customers.
+3. **Other Major Fixes:** 
+    - Fixed a critical data leakage/outlier bug where missing `Income` was originally filled with `$0`. We replaced this with Median Imputation.
+    - Swapped the `LogisticRegression` for a tree-based `HistGradientBoostingClassifier` to automatically handle non-linear patterns and feature scaling.
+    - Used `class_weight='balanced'` and optimized the decision threshold to `0.42` to combat the severe class imbalance (85% 'No' vs 15% 'Yes'), preventing the model from lazily guessing 'No'.
+
 ## The Scenario
 An intern left behind a machine learning script (`baseline_model.ipynb`) that technically runs, but its performance is mediocre at best. Your job is to improve the model and, more importantly, explain the **math and logic** behind your improvements.
 
